@@ -1,0 +1,23 @@
+{
+  "0 debug pnpm:scope": {
+    "selected": 1,
+    "workspacePrefix": "/Users/qifutao/Documents/workspace/pnpm-workspace-demo"
+  },
+  "1 error pnpm": {
+    "code": "ELIFECYCLE",
+    "errno": "ENOENT",
+    "syscall": "spawn",
+    "file": "sh",
+    "pkgid": "pnpm-monorepo-demo@",
+    "stage": "changeset",
+    "script": "changeset",
+    "pkgname": "pnpm-monorepo-demo",
+    "err": {
+      "name": "pnpm",
+      "message": "pnpm-monorepo-demo@ changeset: `changeset`\nspawn ENOENT",
+      "code": "ELIFECYCLE",
+      "stack": "pnpm: pnpm-monorepo-demo@ changeset: `changeset`\nspawn ENOENT\n    at ChildProcess.<anonymous> (/usr/local/lib/node_modules/pnpm/dist/pnpm.cjs:93448:22)\n    at ChildProcess.emit (events.js:400:28)\n    at maybeClose (internal/child_process.js:1058:16)\n    at Process.ChildProcess._handle.onexit (internal/child_process.js:293:5)"
+    }
+  },
+  "2 warn pnpm:global": " Local package.json exists, but node_modules missing, did you mean to install?"
+}

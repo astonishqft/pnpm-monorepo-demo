@@ -1,0 +1,19 @@
+{
+  "name": "@qftjs/monorepo2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "father-build"
+  },
+  "author": "qi.futao",
+  "license": "ISC"
+}
