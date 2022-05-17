@@ -596,7 +596,9 @@ package.json 中增加如下配置:
 $ npx husky add .husky/pre-commit "npx --no-install lint-staged"
 ```
 
+[示例代码](https://github.com/astonishqft/pnpm-monorepo-demo)
+
 ## 参考链接
 
-[用 PNPM Workspaces 替换 Lerna + Yarn](https://juejin.cn/post/7071992448511279141)
-[monorepo工作流基础之changesets打开与进阶](https://blog.csdn.net/qq_21567385/article/details/122361591)
+- [用 PNPM Workspaces 替换 Lerna + Yarn](https://juejin.cn/post/7071992448511279141)
+- [monorepo工作流基础之changesets打开与进阶](https://blog.csdn.net/qq_21567385/article/details/122361591)
