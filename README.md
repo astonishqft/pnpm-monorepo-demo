@@ -140,10 +140,17 @@ packages:
 ├── package.json
 ├── packages
 │   ├── pkg1
-│   │   └── package.json
+│   │   ├── package.json
+│   │   ├── src
+│   │   │   └── index.ts
+│   │   └── tsconfig.json
 │   └── pkg2
-│       └── package.json
-└── pnpm-workspace.yaml
+│       ├── package.json
+│       ├── src
+│       │   └── index.ts
+│       └── tsconfig.json
+├── pnpm-workspace.yaml
+└── tsconfig.root.json
 ```
 ### 安装依赖包
 
@@ -301,7 +308,7 @@ $ pnpm changeset init
 
 ```json
 {
-  "build:packs": "pnpm --filter=@qftjs/* run build"
+  "build": "pnpm --filter=@qftjs/* run build"
 }
 ```
 
@@ -329,8 +336,80 @@ $ pnpm changeset init
 }
 ```
 
-5. 构建产物后发版
-6. 
+这里需要注意的是，版本的选择一共有三种类型，分别是 `patch`、`minor` 和 `major`，严格遵循 [semver](https://semver.org/) 规范。
+
+**这里还有个细节，如果我不想直接发 `release` 版本，而是想先发一个带 `tag` 的 `prerelease`版本呢(比如beta或者rc版本)？**
+
+这里提供了两种方式：
+
+- 手工调整
+
+这种方法最简单粗暴，但是比较容易犯错。
+
+首先需要修改包的版本号：
+
+```json
+{
+  "name": "@qftjs/monorepo1",
+  "version": "1.0.2-beta.1"
+}
+```
+
+然后运行：
+
+```bash
+$ pnpm changeset publish --tag beta
+```
+
+注意发包的时候不要忘记加上 `--tag` 参数。
+
+- 通过 `changeset` 提供的 `Prereleases` 模式
+
+  利用官方提供的 [Prereleases 模式](https://github.com/changesets/changesets/blob/main/docs/prereleases.md)，通过 `pre enter <tag>` 命令进入先进入 pre 模式。
+
+常见的tag如下所示：
+
+|名称|功能|
+|--|--|
+|alpha| 是内部测试版，一般不向外部发布，会有很多Bug，一般只有测试人员使用|
+|beta| 也是测试版，这个阶段的版本会一直加入新的功能。在Alpha版之后推出|
+|rc| Release　Candidate) 系统平台上就是发行候选版本。RC版不会再加入新的功能了，主要着重于除错|
+
+```bash
+$ pnpm changeset pre enter beta
+```
+
+之后在此模式下的 `changeset publish` 均将默认走 `beta` 环境，下面在此模式下任意的进行你的开发，举一个例子如下：
+
+```bash
+# 1-1 进行了一些开发...
+# 1-2 提交变更集
+pnpm changeset
+# 1-3 提升版本
+pnpm version-packages # changeset version
+# 1-4 发包
+pnpm release # pnpm build && pnpm changeset publish --registry=...
+# 1-5 得到 1.0.0-beta.1
+
+# 2-1 进行了一些开发...
+# 2-2 提交变更集
+pnpm changeset
+# 2-3 提升版本
+pnpm version-packages
+# 2-4 发包
+pnpm release
+# 2-5 得到 1.0.0-beta.2
+```
+
+完成版本发布之后，退出 `Prereleases` 模式：
+
+```bash
+$ pnpm changeset pre exit
+```
+
+
+5. 构建产物后发版本
+
 ```json
 {
   "release": "pnpm build && pnpm release:only",
@@ -338,6 +417,82 @@ $ pnpm changeset init
 }
 ```
 
+## 规范代码提交
+
+代码提交规范对于团队或者公司来说是非常重要的，养成良好的代码提交规范可以方便回溯，有助于对本次提交进行review，如果单纯的只是要求团队成员遵循某些代码提交规范，是很难形成强制约束的，现在我们就尝试通过工具来约束代码提交规范。
+
+### 使用commitizen规范commit提交格式
+
+`commitizen` 的作用主要是为了生成标准化的 `commit message`，符合 `Angular` 规范。
+
+一个标准化的 `commit message` 应该包含三个部分：Header、Body 和 Footer，其中的 Header 是必须的，Body 和 Footer 可以选填。
+
+```
+<type>(<scope>): <subject>
+// 空一行
+<body>
+// 空一行
+<footer>
+```
+
+Header 部分由三个字段组成：type（必需）、scope（可选）、subject（必需）
+
+- Type
+`type` 必须是下面的其中之一：
+  - feat: 增加新功能
+  - fix: 修复 bug
+  - docs: 只改动了文档相关的内容
+  - style: 不影响代码含义的改动，例如去掉空格、改变缩进、增删分号
+  - refactor: 代码重构时使用，既不是新增功能也不是代码的bud修复
+  - perf: 提高性能的修改
+  - test: 添加或修改测试代码
+  - build: 构建工具或者外部依赖包的修改，比如更新依赖包的版本
+  - ci: 持续集成的配置文件或者脚本的修改
+  - chore: 杂项，其他不需要修改源代码或不需要修改测试代码的修改
+  - revert: 撤销某次提交
+
+- scope
+
+用于说明本次提交的影响范围。`scope` 依据项目而定，例如在业务项目中可以依据菜单或者功能模块划分，如果是组件库开发，则可以依据组件划分。
+
+- subject
+
+主题包含对更改的简洁描述：
+
+注意三点：
+
+1. 使用祈使语气，现在时，比如使用 "change" 而不是 "changed" 或者 ”changes“
+2. 第一个字母不要大写
+3. 末尾不要以.结尾
+
+- Body
+
+主要包含对主题的进一步描述，同样的，应该使用祈使语气，包含本次修改的动机并将其与之前的行为进行对比。
+
+- Footer
+
+包含此次提交有关重大更改的信息，引用此次提交关闭的issue地址，如果代码的提交是不兼容变更或关闭缺陷，则Footer必需，否则可以省略。
+
+使用方法：
+
+#### 安装 `commitizen`
+
+如果需要在项目中使用 `commitizen` 生成符合 `AngularJS` 规范的提交说明(changelog)，还需要安装 `cz-conventional-changelog` 适配器（需要注意的是，我们之前通过changeset已经帮们生成了changelog，因此这里就不需要再安装 `cz-conventional-changelog` 了）。
+
+```bash
+$ pnpm install -wD commitizen
+```
+
+工程根目录下的 `package.json` 中增加一条脚本：
+
+```bash
+"scripts": {
+  "commit": "cz"
+}
+```
+
+
 ## 参考链接
 
 [用 PNPM Workspaces 替换 Lerna + Yarn](https://juejin.cn/post/7071992448511279141)
+[monorepo工作流基础之changesets打开与进阶](https://blog.csdn.net/qq_21567385/article/details/122361591)

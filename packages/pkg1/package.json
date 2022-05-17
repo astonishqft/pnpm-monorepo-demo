@@ -1,6 +1,6 @@
 {
   "name": "@qftjs/monorepo1",
-  "version": "1.0.0",
+  "version": "1.0.2-beta.1",
   "description": "",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -12,7 +12,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "father-build"
+    "build": "father-build",
+    "watch": "father-build --watch"
   },
   "author": "qi.futao",
   "license": "ISC",

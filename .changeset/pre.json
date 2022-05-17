@@ -1,0 +1,12 @@
+{
+  "mode": "exit",
+  "tag": "beta",
+  "initialVersions": {
+    "@qftjs/monorepo1": "1.0.2-beta.0",
+    "@qftjs/monorepo2": "1.0.1"
+  },
+  "changesets": [
+    "eight-llamas-heal",
+    "smart-suits-vanish"
+  ]
+}
