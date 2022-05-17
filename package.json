@@ -16,6 +16,12 @@
   "engines": {
     "node": ">=14.19.0"
   },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
   "config": {
     "commitizen": {
       "path": "cz-conventional-changelog"

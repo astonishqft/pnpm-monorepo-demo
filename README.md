@@ -577,6 +577,25 @@ module.exports = {
 };
 ```
 
+`lint-staged` 是 Git 里的概念，表示暂存区，`lint-staged` 表示只检查暂存区中的文件。
+
+package.json 中增加如下配置:
+
+```json
+"lint-staged": {
+    "*.ts": [
+      "eslint --fix",
+      "git add"
+    ]
+}
+```
+
+`husky` 中增加 `pre-commit` 校验：
+
+```bash
+$ npx husky add .husky/pre-commit "npx --no-install lint-staged"
+```
+
 ## 参考链接
 
 [用 PNPM Workspaces 替换 Lerna + Yarn](https://juejin.cn/post/7071992448511279141)
