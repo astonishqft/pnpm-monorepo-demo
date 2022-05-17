@@ -475,12 +475,12 @@ Header 部分由三个字段组成：type（必需）、scope（可选）、subj
 
 使用方法：
 
-#### 安装 `commitizen`
+#### `commitizen` 和 `cz-conventional-changelog` 
 
-如果需要在项目中使用 `commitizen` 生成符合 `AngularJS` 规范的提交说明(changelog)，还需要安装 `cz-conventional-changelog` 适配器（需要注意的是，我们之前通过changeset已经帮们生成了changelog，因此这里就不需要再安装 `cz-conventional-changelog` 了）。
+如果需要在项目中使用 `commitizen` 生成符合 `AngularJS` 规范的提交说明，还需要安装 `cz-conventional-changelog` 适配器。
 
 ```bash
-$ pnpm install -wD commitizen
+$ pnpm install -wD commitizen cz-conventional-changelog
 ```
 
 工程根目录下的 `package.json` 中增加一条脚本：
@@ -490,6 +490,47 @@ $ pnpm install -wD commitizen
   "commit": "cz"
 }
 ```
+
+接下来就可以使用 `$ pnpm commit` 来代替 `$ git commit` 进行代码提交了，看到下面的效果就表示已经安装成功了。
+
+![pnpm commit](./commitizen-交互图.png)
+
+#### commitlint && husky
+
+前面我们提到，通过 `commitizen` && `cz-conventional-changelog` 可以规范我们的 `commit message`，但是同时也存在一个问题，如果用户不通过 `pnpm commit` 来提交代码，而是直接通过 `git commit` 命令来提交代码，就能绕开 `commit message` 检查，这是我们不希望看到的。
+
+因此接下来我们使用 `commitlint` 结合 `husky` 来对我们的提交行为进行约束。在 `git commit` 提交之前使用 `git` 钩子来验证信息，阻止不符合规范的`commit` 提交。
+
+安装 `commitlint` 和 `husky`：
+
+```bash
+$ pnpm install -wD @commitlint/cli @commitlint/config-conventional husky
+```
+
+在工程根目录下增加 `commitlint.config.js` 配置文件，指定 `commitlint` 的校验配置文件：
+
+```js
+module.exports = { extends: ['@commitlint/config-conventional'] };
+```
+
+husky 配置(husky的每个版本配置不一样，具体可以参考[官方文档](https://typicode.github.io/husky/#/?id=create-a-hook)，当前的husky是v8.0.1)。
+
+工程根目录下的 package.json 中增加一条 script:
+
+```json
+"scripts": {
+  "postinstall": "husky install"
+}
+```
+
+该脚本会在执行完 `$ pnpm install` 之后自动执行，进行 husky 的初始化，执行完毕后就会在根目录下创建一个 `.husky` 目录。
+
+执行如下命令新增一个husky的hook：
+
+```bash
+$ npx husky add .husky/commit-msg 'npx --no commitlint --edit "$1"'
+```
+
 
 
 ## 参考链接
