@@ -14,7 +14,7 @@
 
 `pnpm` 提出了 `workspace` 的概念，内置了对 `monorepo` 的支持，那么为什么要用 `pnpm` 取代之前的 `lerna` 呢？
 
-这里我总结了一下几点原因：
+这里我总结了以下几点原因：
 
 - lerna 已经不再维护，后续有任何问题社区无法及时响应
 - pnpm装包效率更高，并且可以节约更多磁盘空间
@@ -39,7 +39,7 @@ $ npm install -g pnpm
 
 为了实现一个完整的例子，这里我使用了 `father-build` 对模块进行打包，`father-build` 是基于 `rollup` 进行的一层封装，使用起来更加便捷。
 
-在 pkg1 和 pkg2 的src目录下个创建一个 `index.ts` 文件：
+在 pkg1 和 pkg2 的 src 目录下个创建一个 `index.ts` 文件：
 
 ```ts
 // pkg1/src/index.ts
@@ -158,7 +158,7 @@ packages:
 
 - **全局的公共依赖包，比如打包涉及到的 `rollup`、`typescript` 等**
 
-`pnpm` 提供了 [-w, --workspace-root](https://pnpm.io/zh/pnpm-cli#-w---workspace-root) 参数，可以将依赖包安装到工程的根目录下，作为所有package的公共依赖。
+`pnpm` 提供了 [-w, --workspace-root](https://pnpm.io/zh/pnpm-cli#-w---workspace-root) 参数，可以将依赖包安装到工程的根目录下，作为所有  package 的公共依赖。
 
 比如：
 
@@ -169,7 +169,7 @@ $ pnpm install react -w
 如果是一个开发依赖的话，可以加上 `-D` 参数，表示这是一个开发依赖，会装到 `pacakage.json` 中的 `devDependencies` 中，比如：
 
 ```bash
-$ pnpm install rollup -w -D
+$ pnpm install rollup -wD
 ```
 
 - **给某个package单独安装指定依赖**
@@ -187,7 +187,7 @@ $ pnpm add axios --filter @qftjs/monorepo1
 关于 `--filter` 操作其实还是很丰富的，比如执行 pkg1 下的 scripts 脚本：
 
 ```bash
-$ pnpm test --filter @qftjs/monorepo1
+$ pnpm build --filter @qftjs/monorepo1
 ```
 
 `filter` 后面除了可以指定具体的包名，还可以跟着匹配规则来指定对匹配上规则的包进行操作，比如：
@@ -221,7 +221,7 @@ $ pnpm install @qftjs/monorepo2 -r --filter @qftjs/monorepo1
 
 在设置依赖版本的时候推荐用 `workspace:*`，这样就可以保持依赖的版本是工作空间里最新版本，不需要每次手动更新依赖版本。
 
-当 `publish` 的时候，会自动将 `package.json` 中的 `workspace` 修正为对应的版本号。
+当 `pnpm publish` 的时候，会自动将 `package.json` 中的 `workspace` 修正为对应的版本号。
 
 ### 只允许pnpm
 
@@ -252,7 +252,7 @@ pnpm 推荐了两个开源的版本控制工具：
 
 > Changesets hold two key bits of information: a version type (following semver), and change information to be added to a changelog.
 
-简而言之就是管理包的version和生成changelog。
+简而言之就是**管理包的version**和**生成changelog**。
 
 ### 配置changesets
 
@@ -300,7 +300,7 @@ $ pnpm changeset init
 
 ### 如何使用changesets
 
-一个包的发布流程一把分如下几个步骤：
+一个包一般分如下几个步骤：
 
 为了便于统一管理所有包的发布过程，在工程根目录下的 `pacakge.json` 的 `scripts` 中增加如下几条脚本：
 
