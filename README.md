@@ -407,7 +407,6 @@ pnpm release
 $ pnpm changeset pre exit
 ```
 
-
 5. 构建产物后发版本
 
 ```json
@@ -528,10 +527,55 @@ husky 配置(husky的每个版本配置不一样，具体可以参考[官方文�
 执行如下命令新增一个husky的hook：
 
 ```bash
-$ npx husky add .husky/commit-msg 'npx --no commitlint --edit "$1"'
+$ npx husky add .husky/commit-msg 'npx --no-install commitlint --edit "$1"'
 ```
 
+当我们通过 git commit 提交不符合规范的代码，就会出现如下报错，并且自动退出提交流程。
 
+![husky校验](./husky校验.png)
+
+## 代码规范检查
+
+良好的代码编写规范对团队的可持续发展起着至关重要的作用，因此接下来我会配置 `eslint` 对代码进行统一的规范校验，配合 `lint-staged` 可以对已经提交的代码进行校验。
+
+首选需要安装 `eslint` 和 `lint-stage`。
+
+```bash
+$ pnpm install -wD eslint lint-staged @typescript-eslint/parser @typescript-eslint/eslint-plugin
+```
+
+在根成根目录下添加 `.eslintrc` 配置文件:
+
+```js
+module.exports = {
+  'parser': '@typescript-eslint/parser',
+  'plugins': ['@typescript-eslint'],
+  'rules': {
+    'no-var': 'error',// 不能使用var声明变量
+    'no-extra-semi': 'error',
+    '@typescript-eslint/indent': ['error', 2],
+    'import/extensions': 'off',
+    'linebreak-style': [0, 'error', 'windows'],
+    'indent': ['error', 2, { SwitchCase: 1 }], // error类型，缩进2个空格
+    'space-before-function-paren': 0, // 在函数左括号的前面是否有空格
+    'eol-last': 0, // 不检测新文件末尾是否有空行
+    'semi': ['error', 'always'], // 在语句后面加分号
+    'quotes': ['error', 'single'],// 字符串使用单双引号,double,single
+    'no-console': ['error', { allow: ['log', 'warn'] }],// 允许使用console.log()
+    'arrow-parens': 0,
+    'no-new': 0,//允许使用 new 关键字
+    'comma-dangle': [2, 'never'], // 数组和对象键值对最后一个逗号， never参数：不能带末尾的逗号, always参数：必须带末尾的逗号，always-multiline多行模式必须带逗号，单行模式不能带逗号
+    'no-undef': 0
+  },
+  'parserOptions': {
+    'ecmaVersion': 6,
+    'sourceType': 'module',
+    'ecmaFeatures': {
+      'modules': true
+    }
+  }
+};
+```
 
 ## 参考链接
 
