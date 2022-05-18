@@ -35,11 +35,11 @@ $ npm install -g pnpm
 
 为了便于后续的演示，先在工程根目录下新建 `packages` 目录，并且在 `packages` 目录下创建 `pkg1` 和 `pkg2` 两个工程，分别进到 `pkg1` 和 `pkg2` 两个目录下，执行 `npm init` 命令，初始化两个工程，`package.json` 中的 `name` 字段分别叫做 `@qftjs/menorepo1` 和 `@qftjs/monorepo2`(*PS：@qftjs是提前在npm上创建好的组织，没有的话需要提前创建*)。
 
-为了防止根目录被发布出去，需要设置工程工程个目录下 `package.json`配置文件的 `private` 字段为 `true`。
+为了防止根目录被发布出去，需要设置工程根目录下 `package.json` 配置文件的 `private` 字段为 `true`。
 
 为了实现一个完整的例子，这里我使用了 `father-build` 对模块进行打包，`father-build` 是基于 `rollup` 进行的一层封装，使用起来更加便捷。
 
-在 pkg1 和 pkg2 的 src 目录下个创建一个 `index.ts` 文件：
+在 pkg1 和 pkg2 的 src 目录下创建一个 `index.ts` 文件：
 
 ```ts
 // pkg1/src/index.ts
