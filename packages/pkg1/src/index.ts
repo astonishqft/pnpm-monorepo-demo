@@ -1,8 +1,8 @@
 import pkg2 from '@qftjs/monorepo2';
 
-function fun2() {
+function fun1() {
   pkg2();
-  console.log('I am package 11113333');
+  console.log('I am package 1');
 }
 
-export default fun2;
+export default fun1;

@@ -1,0 +1,22 @@
+{
+  "name": "@qftjs/demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "father-build",
+    "watch": "father-build --watch"
+  },
+  "author": "qi.futao",
+  "license": "ISC",
+  "dependencies": {
+    "@qftjs/monorepo1": "workspace:*"
+  }
+}

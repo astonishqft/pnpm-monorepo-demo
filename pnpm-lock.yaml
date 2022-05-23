@@ -43,6 +43,12 @@ importers:
   packages/pkg2:
     specifiers: {}
 
+  playground/demo:
+    specifiers:
+      '@qftjs/monorepo1': workspace:*
+    dependencies:
+      '@qftjs/monorepo1': link:../../packages/pkg1
+
 packages:
 
   /@babel/code-frame/7.16.7:
