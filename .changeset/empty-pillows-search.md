@@ -1,5 +1,6 @@
 ---
 "@qftjs/monorepo1": patch
+"@qftjs/monorepo2": patch
 ---
 
-test pkg1 beta2
+test 444
