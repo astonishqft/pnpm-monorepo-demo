@@ -1,5 +1,8 @@
 # pnpm + workspace 构建你的 monorepo 工程
 
+## 欢迎关注我的公众号
+![微信logo](https://github.com/astonishqft/pnpm-monorepo-demo/assets/15138753/87dc79ca-da1b-4a74-80bb-5bd12765ef11)
+
 ## 什么是monorepo？
 
 什么是 monorepo？以及和 multirepo 的区别是什么?
